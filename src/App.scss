@@ -8,8 +8,23 @@
     right: 64px;
     overflow-y: auto;
     transition: all .5s;
+    display: flex;
+    flex-direction: column;
     &.--hidden {
       transform: translateX(-100%);
+    }
+    a {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      padding-left: 16px;
+      font-size: 32px;
+      text-decoration: none;
+      color: salmon;
+      &:focus, &:hover {
+        outline: none;
+        background-color: #eee;
+      }
     }
   }
   .content-header {
