@@ -1,0 +1,12 @@
+{
+  "mount": {
+    "src": {
+      "url": "/dist"
+    },
+    "public": {
+      "url": "/",
+      "static": true,
+      "resolve": false
+    }
+  }
+}
