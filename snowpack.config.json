@@ -10,6 +10,7 @@
     }
   },
   "plugins": [
+    "@snowpack/plugin-sass",
     "@snowpack/plugin-typescript"
   ]
 }

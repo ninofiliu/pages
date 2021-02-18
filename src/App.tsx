@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './App.css';
+import './App.scss';
 
 export default () => {
   const [menuOpened, setMenuOpened] = useState<boolean>(false);
