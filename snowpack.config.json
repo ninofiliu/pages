@@ -1,12 +1,15 @@
 {
   "mount": {
-    "src": {
-      "url": "/dist"
-    },
     "public": {
       "url": "/",
       "static": true,
       "resolve": false
+    },
+    "src": {
+      "url": "/dist"
     }
-  }
+  },
+  "plugins": [
+    "@snowpack/plugin-typescript"
+  ]
 }
