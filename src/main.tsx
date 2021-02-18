@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-const App = ({ n }: {n: number}) => <div>{2 * n}</div>;
+import App from './App';
+import './styles.css';
 
 ReactDOM.render(
-  <App n={10} />,
-  document.getElementById('root'),
+  <App />,
+  document.body,
 );

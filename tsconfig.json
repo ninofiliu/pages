@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "jsx": "react"
+    "jsx": "react",
+    "lib": [
+      "ES2015",
+      "DOM"
+    ]
   },
   "include": ["src/**/*"]
 }

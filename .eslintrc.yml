@@ -14,9 +14,9 @@ plugins:
 - react
 - '@typescript-eslint'
 rules:
-- no-use-before-define: off
-- react/jsx-filename-extension:
+  no-use-before-define: off
+  react/jsx-filename-extension:
   - error
   - extensions:
     - tsx
-- '@typescript-eslint/no-use-before-define': error
+  '@typescript-eslint/no-use-before-define': error
