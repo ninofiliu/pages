@@ -12,3 +12,15 @@ body {
 button {
   font: inherit;
 }
+input {
+  display: block;
+  font: inherit;
+  border: none;
+  border-bottom: 1px solid black;
+  width: 100%;
+  background: transparent;
+  &:focus {
+    outline: none;
+    border-color: salmon;
+  }
+}

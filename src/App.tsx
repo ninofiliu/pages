@@ -3,6 +3,7 @@ import {
   BrowserRouter, Switch, Route, Link, Redirect,
 } from 'react-router-dom';
 import Home from './views/Home';
+import ColorDistance from './views/color-distance/ColorDistance';
 import './App.scss';
 
 export default () => {
@@ -25,11 +26,13 @@ export default () => {
           </div>
           <Switch>
             <Route exact path="/"><Home /></Route>
+            <Route path="/color-distance"><ColorDistance /></Route>
             <Route path="/*"><Redirect to="/" /></Route>
           </Switch>
         </div>
         <div className={`menu ${menuOpened ? '--opened' : '--hidden'}`}>
-          <Link to="/">Home</Link>
+          <Link to="/" onClick={() => setMenuOpened(false)}>Home</Link>
+          <Link to="/color-distance" onClick={() => setMenuOpened(false)}>Color Distance</Link>
         </div>
       </div>
     </BrowserRouter>
