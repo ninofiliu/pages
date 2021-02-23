@@ -1,25 +1,44 @@
 import React, { useState } from 'react';
 import './ColorDistance.scss';
 
-type RGBA = [number, number, number]
+const computeColor = (colorStr: string): [number, number, number, number, number, number] => {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1;
+  canvas.height = 1;
+  const ctx = canvas.getContext('2d');
 
-const canvas = document.createElement('canvas');
-canvas.width = 1;
-canvas.height = 1;
-const ctx = canvas.getContext('2d');
-
-const computeRgba = (colStr: string): RGBA => {
-  ctx.fillStyle = colStr;
+  ctx.restore();
+  ctx.fillStyle = colorStr;
   ctx.fillRect(0, 0, 1, 1);
   const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
-  return [r, g, b];
+
+  const nr = r / 255;
+  const ng = g / 255;
+  const nb = b / 255;
+
+  const x = nr - (ng + nb) / 2;
+  const y = (Math.sqrt(3) / 2) * (ng - nb);
+  const nh = Math.atan2(y, x);
+  const h = Math.round(nh * (180 / Math.PI));
+
+  const max = Math.max(nr, ng, nb);
+  const min = Math.min(nr, ng, nb);
+  const nl = (max + min) / 2;
+  const l = Math.round(100 * nl);
+
+  const chroma = max - min;
+  const ns = (nl === 0 || nl === 1) ? 0 : (chroma / (2 * (nl < 0.5 ? nl : (1 - nl))));
+  const s = Math.round(100 * ns);
+
+  return [r, g, b, h, s, l];
 };
 
 export default () => {
   const [colorStr, setColorStr] = useState<string>('');
   const [paletteStr, setPaletteStr] = useState<string>('');
 
-  const [r, g, b] = computeRgba(colorStr);
+  const color = computeColor(colorStr);
+  const palette = paletteStr.split(',').map((c) => computeColor(c));
 
   return (
     <div className="ColorDistance">
@@ -42,7 +61,7 @@ export default () => {
         />
       </div>
       <div className="out">
-        {JSON.stringify({ r, g, b })}
+        {JSON.stringify({ color, palette })}
       </div>
     </div>
   );
