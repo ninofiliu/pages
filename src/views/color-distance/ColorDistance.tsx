@@ -34,11 +34,15 @@ const computeColor = (colorStr: string): [number, number, number, number, number
 };
 
 export default () => {
+  const columns = ['red', 'green', 'blue', 'hue', 'saturation', 'lightness'].map((name, index) => ({ name, index }));
+
   const [colorStr, setColorStr] = useState<string>('');
   const [paletteStr, setPaletteStr] = useState<string>('');
+  const [sortBy, setSortBy] = useState<number>(0);
 
   const color = computeColor(colorStr);
   const palette = paletteStr.split(',').map((c) => computeColor(c));
+  const sortedPalette = [...palette].sort((c1, c2) => Math.abs(c1[sortBy] - color[sortBy]) - Math.abs(c2[sortBy] - color[sortBy]));
 
   return (
     <div className="ColorDistance">
@@ -61,7 +65,27 @@ export default () => {
         />
       </div>
       <div className="out">
-        {JSON.stringify({ color, palette })}
+        {columns.map(({ name, index }) => (
+          <button
+            type="button"
+            onClick={() => setSortBy(index)}
+            key={index}
+            className={index === sortBy ? '--accent' : ''}
+          >
+            {name}
+          </button>
+        ))}
+        {color
+          .map((v, i) => ({ v, i }))
+          .map(({ v, i }) => (
+            <div key={`color-${i}`} className="--accent">{v}</div>
+          ))}
+        {sortedPalette
+          .map((c) => c
+            .map((v, i) => ({ v, i }))
+            .map(({ v, i }) => (
+              <div key={`palette-${c}-${i}`} className={i === sortBy ? '--accent' : ''}>{v}</div>
+            )))}
       </div>
     </div>
   );

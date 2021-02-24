@@ -6,4 +6,21 @@
   @media screen and (min-width: 1000px) {
     grid-template-columns: 1fr 1fr;    
   }
+  .out {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    text-align: center;
+  }
+  button {
+    border: none;
+    background: transparent;
+    &:hover, &:focus {
+      outline: none;
+      background: #eee;
+      cursor: pointer;
+    }
+  }
+  .--accent {
+    background: #eee;
+  }
 }
