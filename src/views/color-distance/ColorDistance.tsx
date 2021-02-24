@@ -34,37 +34,51 @@ const computeColor = (colorStr: string): [number, number, number, number, number
 };
 
 export default () => {
-  const columns = ['red', 'green', 'blue', 'hue', 'saturation', 'lightness'].map((name, index) => ({ name, index }));
+  const columns = ['red', 'green', 'blue', 'hue', 'saturation', 'lightness']
+    .map((name, index) => ({ name, index }));
 
-  const [colorStr, setColorStr] = useState<string>('');
+  const [targetStr, setTargetStr] = useState<string>('');
   const [paletteStr, setPaletteStr] = useState<string>('');
-  const [sortBy, setSortBy] = useState<number>(0);
+  const [sortBy, setSortBy] = useState<number>(3);
 
-  const color = computeColor(colorStr);
-  const palette = paletteStr.split(',').map((c) => computeColor(c));
-  const sortedPalette = [...palette].sort((c1, c2) => Math.abs(c1[sortBy] - color[sortBy]) - Math.abs(c2[sortBy] - color[sortBy]));
+  const target = computeColor(targetStr);
+  const palette = paletteStr
+    .split(',')
+    .map((str) => ({ str, color: computeColor(str) }));
+  const sortedPalette = [...palette].sort((p1, p2) => {
+    const dist1 = Math.abs(p1.color[sortBy] - target[sortBy]);
+    const dist2 = Math.abs(p2.color[sortBy] - target[sortBy]);
+    return dist1 - dist2;
+  });
 
   return (
     <div className="ColorDistance">
       <div className="in">
         <p>
-          Color - any valid <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">CSS color</a> is accepted
+          This tool allows to find the closest color among a color palette to a target color, with the distance being measured on any RGB or HSL channel. That can come in handy for example when you want to find what is the styleguide color that has the closest hue from a tint that is not in the styleguide.
+        </p>
+        <p>
+          Target - any valid <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value">CSS color</a> is accepted
         </p>
         <input
           placeholder="#123456"
-          value={colorStr}
-          onChange={(evt) => setColorStr(evt.target.value)}
+          value={targetStr}
+          onChange={(evt) => setTargetStr(evt.target.value)}
         />
         <p>
-          Palette - comma-separated list of colors as above
+          Palette - comma-separated list of any valid CSS color
         </p>
         <input
-          placeholder="#123456,blue,rgb(10,20,30)"
+          placeholder="#123456,blue,rgb(10,20,30),hsl(10deg,75%,25%)"
           value={paletteStr}
           onChange={(evt) => setPaletteStr(evt.target.value)}
         />
+        <p>
+          Hue in <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/angle#units">deg</a>, saturation and lightness in <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/percentage">percentage</a>.
+        </p>
       </div>
       <div className="out">
+        <div />
         {columns.map(({ name, index }) => (
           <button
             type="button"
@@ -75,17 +89,27 @@ export default () => {
             {name}
           </button>
         ))}
-        {color
+        <div>{targetStr}</div>
+        {target
           .map((v, i) => ({ v, i }))
           .map(({ v, i }) => (
-            <div key={`color-${i}`} className="--accent">{v}</div>
+            <div key={i} className="--accent">{v}</div>
           ))}
-        {sortedPalette
-          .map((c) => c
-            .map((v, i) => ({ v, i }))
-            .map(({ v, i }) => (
-              <div key={`palette-${c}-${i}`} className={i === sortBy ? '--accent' : ''}>{v}</div>
-            )))}
+        {sortedPalette.map((p) => (
+          <>
+            <div>{p.str}</div>
+            {p.color
+              .map((v, i) => ({ v, i }))
+              .map(({ v, i }) => (
+                <div
+                  key={i}
+                  className={i === sortBy ? '--accent' : ''}
+                >
+                  {v}
+                </div>
+              ))}
+          </>
+        ))}
       </div>
     </div>
   );

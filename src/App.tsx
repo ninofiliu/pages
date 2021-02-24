@@ -14,7 +14,10 @@ export default () => {
         <div className="content">
           <div className="content-header">
             <div className="title">
-              Nino Filiu
+              <Switch>
+                <Route exact path="/">Nino Filiu</Route>
+                <Route path="/color-distance">Color Distance</Route>
+              </Switch>
             </div>
             <button
               type="button"

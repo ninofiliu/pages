@@ -1,8 +1,8 @@
 a {
   color: salmon;
-}
-a:hover {
-  color: brown;
+  &:hover, &:focus {
+    color: brown;
+  }
 }
 body {
   margin: 0;
